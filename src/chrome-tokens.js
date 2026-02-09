@@ -1,0 +1,59 @@
+// Design tokens extracted from Chromium source code.
+// Sources: layout_constants.cc, tab_style.cc, toolbar_button.h
+
+import { createChromeTheme } from './chrome-color-system';
+
+export const light = createChromeTheme({ mode: 'baseline', isDark: false });
+export const dark = createChromeTheme({ mode: 'baseline', isDark: true });
+export { createChromeTheme };
+
+export const dims = {
+  // Tab (tab_style.cc, layout_constants.cc)
+  tabHeight:             34,   // kTabHeight = 34 + overlap(1) = 35
+  tabStripHeight:        41,   // kTabHeight(35) + kTabStripPadding(6)
+  tabStripPadding:       6,
+  tabTopCornerRadius:    10,
+  tabBottomCornerRadius: 12,
+  tabOverlap:            18,   // 2*12 - (4 + 2)
+  tabStandardWidth:      256,  // kTabWidth(232) + 2*bottomCornerR(12)
+  tabMinWidth:           36,
+  tabCloseButtonSize:    16,
+  tabSeparatorHeight:    16,
+  tabSeparatorThickness: 2,
+  tabSeparatorHMargin:   2,
+  tabSeparatorCornerRadius: 1,
+  tabAfterTitlePadding:  4,
+  tabstripToolbarOverlap:1,
+  tabVerticalPadding:    6,
+  tabHorizontalPadding:  8,
+
+  // Hover rect (tab_style_views.cc)
+  hoverRectInsetX:       12,
+  hoverRectHeight:       28,
+  hoverRectCornerRadius: 10,
+
+  // Toolbar (layout_constants.cc)
+  toolbarButtonHeight:   34,
+  toolbarInteriorMarginV:6,
+  toolbarInteriorMarginH:5,
+  toolbarElementPadding: 4,
+  toolbarStandardSpacing:9,
+  toolbarIconSize:       20,
+  toolbarDividerWidth:   2,
+  toolbarDividerHeight:  16,
+  toolbarDividerCornerRadius: 1,
+  toolbarDividerSpacing: 9,
+
+  // Omnibox / Location Bar (layout_constants.cc)
+  omniboxHeight:         34,
+  omniboxBorderRadius:   17,   // height / 2
+  omniboxIconSize:       16,
+  omniboxTrailingIcon:   20,   // kLocationBarTrailingIconSize
+  omniboxChildRadius:    12,
+  omniboxLeadingEdgePadding:  5,
+  omniboxTrailingEdgePadding: 12,
+
+  // Window (custom_frame_view.cc)
+  captionButtonWidth:    46,
+  captionButtonHeight:   32,
+};

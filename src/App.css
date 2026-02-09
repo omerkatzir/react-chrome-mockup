@@ -1,0 +1,166 @@
+#root {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* Toolbar buttons — kColorSysStateHoverOnSubtle */
+.toolbar-btn:hover {
+  background: var(--toolbar-btn-hover) !important;
+}
+
+/* Tab strip buttons (new tab, tab search) — ::after ink drop overlay */
+.tab-strip-btn {
+  position: relative;
+  overflow: hidden;
+}
+.tab-strip-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: transparent;
+  transition: background 0.15s;
+  pointer-events: none;
+}
+.tab-strip-btn > svg {
+  position: relative;
+  z-index: 1;
+}
+.tab-strip-btn:hover::after {
+  background: var(--header-hover);
+}
+
+/* Tab close button */
+.tab-close-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Omnibox hover */
+.omnibox:hover {
+  filter: brightness(0.97);
+}
+
+/* Omnibox action buttons (page info, star) — ::after ink drop overlay */
+.omnibox-action {
+  position: relative;
+  overflow: hidden;
+}
+.omnibox-action::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: transparent;
+  transition: background 0.15s;
+  pointer-events: none;
+}
+.omnibox-action > svg {
+  position: relative;
+  z-index: 1;
+}
+.omnibox-action:hover::after {
+  background: var(--omnibox-action-hover);
+}
+
+/* Tab hover — glow_hover_controller.cc: 200ms ease transitions */
+.tab-hover-rect {
+  opacity: 0;
+  transition: opacity 200ms ease-in;
+}
+.chrome-tab:hover .tab-hover-rect {
+  opacity: 1;
+  transition: opacity 200ms ease-out;
+}
+
+/* Hide separator on hovered tab and on the tab before it */
+.chrome-tab:hover .tab-separator {
+  opacity: 0 !important;
+}
+.chrome-tab:has(+ .chrome-tab:hover) .tab-separator {
+  opacity: 0 !important;
+}
+
+/* macOS traffic lights */
+.traffic-light:hover {
+  filter: brightness(0.85);
+}
+
+/* Windows caption buttons */
+.caption-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+.caption-btn-close:hover {
+  background: #E81123 !important;
+}
+.caption-btn-close:hover svg line {
+  stroke: #FFFFFF;
+}
+
+/* ── Demo UI Controls ── */
+
+.controls-panel {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.ctrl-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: opacity 0.15s, transform 0.1s;
+  line-height: 1.4;
+}
+.ctrl-btn:hover {
+  opacity: 0.85;
+}
+.ctrl-btn:active {
+  transform: scale(0.97);
+}
+
+.ctrl-select {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: system-ui, -apple-system, sans-serif;
+  cursor: pointer;
+  appearance: auto;
+  line-height: 1.4;
+}
+
+.ctrl-color-input {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ctrl-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.ctrl-divider {
+  width: 1px;
+  height: 20px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
