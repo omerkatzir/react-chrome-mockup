@@ -126,7 +126,6 @@ export default function ChromeTabStrip({ tabs, activeTabId, theme, onTabClick, o
 
       <NewTabButton theme={theme} onClick={onNewTab} />
 
-      {/* Draggable fill area */}
       <div style={{ flex: 1, minWidth: 20, WebkitAppRegion: 'drag' }} />
 
       {isMac ? <TabSearchButton theme={theme} platform={platform} /> : <WindowsCaptionButtons theme={theme} />}

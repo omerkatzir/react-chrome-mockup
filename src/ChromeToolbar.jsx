@@ -132,13 +132,11 @@ export default function ChromeToolbar({ url = 'https://www.google.com', theme })
       '--omnibox-action-hover': theme.omniboxActionHover,
       '--toolbar-btn-hover': theme.toolbarBtnHover,
     }}>
-      {/* Navigation */}
       <ToolbarButton disabled><BackIcon color={ic} /></ToolbarButton>
       <ToolbarButton disabled style={{ marginLeft: pad }}><ForwardIcon color={ic} /></ToolbarButton>
       <ToolbarButton style={{ marginLeft: pad }}><ReloadIcon color={ic} /></ToolbarButton>
       <ToolbarButton style={{ marginLeft: pad }}><HomeIcon color={ic} /></ToolbarButton>
 
-      {/* Omnibox */}
       <div
         className="omnibox"
         style={{
@@ -169,7 +167,6 @@ export default function ChromeToolbar({ url = 'https://www.google.com', theme })
         </OmniboxAction>
       </div>
 
-      {/* Extensions + divider + profile + menu */}
       <ToolbarButton><ExtensionsIcon color={ic} /></ToolbarButton>
 
       <div style={{

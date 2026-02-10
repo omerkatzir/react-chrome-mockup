@@ -74,7 +74,6 @@ export default function ChromeTab({
         )}
       </svg>
 
-      {/* Separator */}
       {showSep && (
         <div
           className="tab-separator"
@@ -118,7 +117,6 @@ export default function ChromeTab({
         </span>
       </div>
 
-      {/* Close button */}
       <div
         onClick={(e) => { e.stopPropagation(); onClose?.(); }}
         className="tab-close-btn"

@@ -1,11 +1,13 @@
 import { dims } from './chrome-tokens';
 import ChromeTabStrip from './ChromeTabStrip';
 import ChromeToolbar from './ChromeToolbar';
+import ChromeSidePanel from './ChromeSidePanel';
 
 export default function ChromeWindow({
   tabs, activeTabId, theme, url, children,
   width = 1280, height = 800, platform = 'mac',
   onTabClick, onTabClose, onNewTab,
+  sidePanel = false, sidePanelContent, sidePanelTitle, onSidePanelClose,
 }) {
   return (
     <div style={{
@@ -27,10 +29,26 @@ export default function ChromeWindow({
         <ChromeToolbar url={url} theme={theme} />
       </div>
 
-      <div style={{ height: 1, background: theme.separator, flexShrink: 0 }} />
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', background: theme.toolbar }}>
+        <div style={{
+          flex: 1,
+          background: '#FFFFFF',
+          overflow: 'auto',
+          borderTop: `1px solid ${theme.separator}`,
+          ...(sidePanel ? {
+            borderRight: `1px solid ${theme.separator}`,
+            borderTopRightRadius: 8,
+          } : {}),
+        }}>
+          {children}
+        </div>
 
-      <div style={{ flex: 1, background: '#FFFFFF', overflow: 'auto' }}>
-        {children}
+        {sidePanel && (
+          <ChromeSidePanel
+            title={sidePanelTitle} theme={theme} onClose={onSidePanelClose}>
+            {sidePanelContent}
+          </ChromeSidePanel>
+        )}
       </div>
     </div>
   );

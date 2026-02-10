@@ -32,6 +32,11 @@
   background: var(--header-hover);
 }
 
+/* Side panel close button */
+.side-panel-close-btn:hover {
+  background: var(--toolbar-btn-hover) !important;
+}
+
 /* Tab close button */
 .tab-close-btn:hover {
   background: rgba(0, 0, 0, 0.08) !important;

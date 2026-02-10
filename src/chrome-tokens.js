@@ -56,4 +56,13 @@ export const dims = {
   // Window (custom_frame_view.cc)
   captionButtonWidth:    46,
   captionButtonHeight:   32,
+
+  // Side Panel (side_panel.cc, side_panel_header.cc)
+  sidePanelContentWidth:        360,
+  sidePanelHeaderHeight:        40,
+  sidePanelHeaderButtonSize:    20,
+  sidePanelHeaderIconSize:      16,
+  sidePanelHeaderMarginH:       4,
+  sidePanelContentCornerRadius: 16,
+  sidePanelBorderPadding:       8,
 };

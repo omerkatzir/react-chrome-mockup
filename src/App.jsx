@@ -24,6 +24,7 @@ export default function App() {
   const [themeMode, setThemeMode] = useState('baseline');
   const [seedColor, setSeedColor] = useState('#4285F4');
   const [variant, setVariant] = useState('tonalSpot');
+  const [showSidePanel, setShowSidePanel] = useState(false);
 
   const theme = useMemo(
     () => createChromeTheme({ mode: themeMode, seedColor, variant, isDark }),
@@ -62,9 +63,7 @@ export default function App() {
       alignItems: 'center', justifyContent: 'center',
       gap: 20, padding: 40,
     }}>
-      {/* Controls */}
       <div className="controls-panel" style={{ background: panelBg, color: fg }}>
-        {/* Mode selector */}
         {['baseline', 'seed', 'grayscale'].map((m) => (
           <button key={m} className="ctrl-btn" onClick={() => setThemeMode(m)}
             style={accent(themeMode === m)}>
@@ -101,13 +100,30 @@ export default function App() {
           style={{ background: isDark ? '#333' : '#f0f0f0', color: fg, border: 'none' }}>
           {platform === 'mac' ? 'Windows' : 'macOS'}
         </button>
+
+        <button className="ctrl-btn" onClick={() => setShowSidePanel(s => !s)}
+          style={{ background: isDark ? '#333' : '#f0f0f0', color: fg, border: 'none' }}>
+          {showSidePanel ? 'Hide Panel' : 'Side Panel'}
+        </button>
       </div>
 
-      {/* Chrome window mockup */}
       <ChromeWindow
         tabs={tabs} activeTabId={activeTab} theme={theme}
         url="https://www.google.com" platform={platform}
         onTabClick={setActiveTab} onTabClose={handleCloseTab} onNewTab={handleNewTab}
+        sidePanel={showSidePanel}
+        sidePanelTitle="Bookmarks"
+        onSidePanelClose={() => setShowSidePanel(false)}
+        sidePanelContent={
+          <div style={{ padding: 16, color: '#999', fontFamily: 'system-ui' }}>
+            <div style={{ fontSize: 14, fontWeight: 500, color: '#666', marginBottom: 8 }}>
+              Your side panel content here
+            </div>
+            <div style={{ fontSize: 13 }}>
+              Replace this with your own design
+            </div>
+          </div>
+        }
       >
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
