@@ -3,7 +3,7 @@ import { dims } from './chrome-tokens';
 const ICON = dims.toolbarIconSize;
 const OMNI_ICON = dims.omniboxIconSize;
 
-// All icon paths from Chromium's *_chrome_refresh.icon files (CR2023, filled, CANVAS 20)
+// Icons from Chromium's *_chrome_refresh.icon files (CANVAS 20 unless noted)
 
 function BackIcon({ color }) {
   return (
@@ -37,7 +37,7 @@ function HomeIcon({ color }) {
   );
 }
 
-// secure_page_info_chrome_refresh.icon (CANVAS 16) — "tune/sliders" page info icon
+// page_info_chrome_refresh.icon (CANVAS 16)
 function PageInfoIcon({ color }) {
   return (
     <svg width={OMNI_ICON} height={OMNI_ICON} viewBox="0 0 16 16" fill={color}>
@@ -46,7 +46,7 @@ function PageInfoIcon({ color }) {
   );
 }
 
-// star_chrome_refresh.icon (CANVAS 20) — outlined star, rendered at trailing icon size
+// star_chrome_refresh.icon (CANVAS 20), rendered at trailing icon size
 function StarIcon({ color }) {
   return (
     <svg width={dims.omniboxTrailingIcon} height={dims.omniboxTrailingIcon} viewBox="0 0 20 20" fill={color}>
@@ -71,7 +71,6 @@ function MenuIcon({ color }) {
   );
 }
 
-// account_circle_chrome_refresh.icon (CANVAS 20)
 function AvatarIcon({ color }) {
   return (
     <svg width={ICON} height={ICON} viewBox="0 0 20 20" fill={color} fillRule="nonzero">
@@ -157,7 +156,7 @@ export default function ChromeToolbar({ url = 'https://www.google.com', theme })
         <span style={{
           flex: 1, fontSize: 14, color: theme.omniboxText,
           whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-          userSelect: 'none', paddingLeft: 2, paddingRight: 2,
+          userSelect: 'none', paddingLeft: dims.omniboxTextLeftPadding, paddingRight: 2,
         }}>
           {url}
         </span>

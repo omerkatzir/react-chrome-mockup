@@ -1,5 +1,4 @@
-// Design tokens extracted from Chromium source code.
-// Sources: layout_constants.cc, tab_style.cc, toolbar_button.h
+// Layout tokens extracted from Chromium source (layout_constants.cc and friends)
 
 import { createChromeTheme } from './chrome-color-system';
 
@@ -51,6 +50,7 @@ export const dims = {
   omniboxTrailingIcon:   20,   // kLocationBarTrailingIconSize
   omniboxChildRadius:    12,
   omniboxLeadingEdgePadding:  5,
+  omniboxTextLeftPadding:     8,    // text_left in location_bar_view.cc
   omniboxTrailingEdgePadding: 12,
 
   // Window (custom_frame_view.cc)
@@ -65,4 +65,17 @@ export const dims = {
   sidePanelHeaderMarginH:       4,
   sidePanelContentCornerRadius: 16,
   sidePanelBorderPadding:       8,
+
+  // Bookmark Bar (layout_constants.cc, bookmark_button_util.h, chrome_layout_provider.cc)
+  bookmarkBarHeight:             34,   // kBookmarkBarButtonHeight(28) + 6 vertical margin
+  bookmarkBarButtonHeight:       28,   // kBookmarkBarButtonHeight (non-touch)
+  bookmarkBarButtonPadding:      4,    // kToolbarElementPadding (between buttons)
+  bookmarkBarButtonInset:        6,    // INSETS_BOOKMARKS_BAR_BUTTON (uniform)
+  bookmarkBarImageLabelSpacing:  6,    // kBookmarkBarButtonImageLabelPadding
+  bookmarkBarMaxButtonWidth:     150,  // kMaxButtonWidth
+  bookmarkBarLeadingMargin:      6,    // kBookmarkBarLeadingMargin
+  bookmarkBarTrailingMargin:     8,    // kBookmarkBarTrailingMargin
+  bookmarkBarFaviconSize:        16,   // gfx::kFaviconSize
+  bookmarkBarSeparatorThickness: 2,    // kBookmarkBarSeparatorThickness
+  bookmarkBarSeparatorPadding:   8,    // kSeparatorPadding
 };

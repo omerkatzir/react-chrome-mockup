@@ -1,6 +1,7 @@
 import { dims } from './chrome-tokens';
 import ChromeTabStrip from './ChromeTabStrip';
 import ChromeToolbar from './ChromeToolbar';
+import ChromeBookmarkBar from './ChromeBookmarkBar';
 import ChromeSidePanel from './ChromeSidePanel';
 
 export default function ChromeWindow({
@@ -8,6 +9,7 @@ export default function ChromeWindow({
   width = 1280, height = 800, platform = 'mac',
   onTabClick, onTabClose, onNewTab,
   sidePanel = false, sidePanelContent, sidePanelTitle, onSidePanelClose,
+  showBookmarkBar = false, bookmarks = [],
 }) {
   return (
     <div style={{
@@ -28,6 +30,10 @@ export default function ChromeWindow({
       <div style={{ marginTop: -dims.tabstripToolbarOverlap }}>
         <ChromeToolbar url={url} theme={theme} />
       </div>
+
+      {showBookmarkBar && (
+        <ChromeBookmarkBar bookmarks={bookmarks} theme={theme} />
+      )}
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden', background: theme.toolbar }}>
         <div style={{

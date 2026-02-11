@@ -37,6 +37,11 @@
   background: var(--toolbar-btn-hover) !important;
 }
 
+/* Bookmark bar buttons */
+.bookmark-btn:hover {
+  background: var(--toolbar-btn-hover) !important;
+}
+
 /* Tab close button */
 .tab-close-btn:hover {
   background: rgba(0, 0, 0, 0.08) !important;
