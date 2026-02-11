@@ -1,0 +1,104 @@
+/* react-chrome-mockup component styles */
+
+/* Toolbar buttons */
+.toolbar-btn:hover {
+  background: var(--toolbar-btn-hover) !important;
+}
+
+/* Tab strip buttons (new tab, tab search) */
+.tab-strip-btn {
+  position: relative;
+  overflow: hidden;
+}
+.tab-strip-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: transparent;
+  transition: background 0.15s;
+  pointer-events: none;
+}
+.tab-strip-btn > svg {
+  position: relative;
+  z-index: 1;
+}
+.tab-strip-btn:hover::after {
+  background: var(--header-hover);
+}
+
+/* Side panel close button */
+.side-panel-close-btn:hover {
+  background: var(--toolbar-btn-hover) !important;
+}
+
+/* Bookmark bar buttons */
+.bookmark-btn:hover {
+  background: var(--toolbar-btn-hover) !important;
+}
+
+/* Tab close button */
+.tab-close-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Omnibox hover */
+.omnibox:hover {
+  filter: brightness(0.97);
+}
+
+/* Omnibox action buttons (page info, star) */
+.omnibox-action {
+  position: relative;
+  overflow: hidden;
+}
+.omnibox-action::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: transparent;
+  transition: background 0.15s;
+  pointer-events: none;
+}
+.omnibox-action > svg {
+  position: relative;
+  z-index: 1;
+}
+.omnibox-action:hover::after {
+  background: var(--omnibox-action-hover);
+}
+
+/* Tab hover */
+.tab-hover-rect {
+  opacity: 0;
+  transition: opacity 200ms ease-in;
+}
+.chrome-tab:hover .tab-hover-rect {
+  opacity: 1;
+  transition: opacity 200ms ease-out;
+}
+
+/* Hide separator on hovered tab and on the tab before it */
+.chrome-tab:hover .tab-separator {
+  opacity: 0 !important;
+}
+.chrome-tab:has(+ .chrome-tab:hover) .tab-separator {
+  opacity: 0 !important;
+}
+
+/* macOS traffic lights */
+.traffic-light:hover {
+  filter: brightness(0.85);
+}
+
+/* Windows caption buttons */
+.caption-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+.caption-btn-close:hover {
+  background: #E81123 !important;
+}
+.caption-btn-close:hover svg line {
+  stroke: #FFFFFF;
+}
