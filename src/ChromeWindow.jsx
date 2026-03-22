@@ -87,39 +87,10 @@ export default function ChromeWindow({
         fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
         fontSize: 13,
       }}>
-        {/* Top row: traffic lights in the tab strip area + toolbar, spanning full width */}
-        <div style={{
-          display: 'flex', alignItems: 'stretch',
-          background: theme.tabStripBg,
-          flexShrink: 0,
-        }}>
-          {/* Traffic lights / caption area at leading edge */}
-          {isMac && (
-            <div style={{
-              width: dims.verticalTabStripCollapsedWidth,
-              display: 'flex', alignItems: 'center',
-              flexShrink: 0,
-            }}>
-              <div style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                paddingLeft: 12,
-              }}>
-                {['#FF5F57', '#FEBC2E', '#28C840'].map((color, i) => (
-                  <div key={i} className="traffic-light" style={{
-                    width: 14, height: 14, borderRadius: '50%',
-                    background: color, cursor: 'pointer',
-                  }} />
-                ))}
-              </div>
-            </div>
-          )}
-          <div style={{
-            flex: 1,
-            borderTopLeftRadius: 8, overflow: 'hidden',
-          }}>
-            <ChromeToolbar url={url} theme={theme} platform={platform} verticalTabs />
-          </div>
-        </div>
+        {/* Top row: toolbar spans full width, traffic lights inside it */}
+        {/* In collapsed mode, toolbar bg extends edge to edge — no separate tabStripBg area */}
+        <ChromeToolbar url={url} theme={theme} platform={platform} verticalTabs
+          showTrafficLights={isMac} />
 
         {showBookmarkBar && <ChromeBookmarkBar bookmarks={bookmarks} theme={theme} />}
 

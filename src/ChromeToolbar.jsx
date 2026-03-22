@@ -147,7 +147,7 @@ function WindowsCaptionButtonsToolbar({ theme }) {
   );
 }
 
-export default function ChromeToolbar({ url = 'https://www.google.com', theme, platform = 'mac', verticalTabs = false }) {
+export default function ChromeToolbar({ url = 'https://www.google.com', theme, platform = 'mac', verticalTabs = false, showTrafficLights = false }) {
   const ic = theme.toolbarIcon;
   const pad = dims.toolbarElementPadding;
   const spc = dims.toolbarStandardSpacing;
@@ -163,6 +163,20 @@ export default function ChromeToolbar({ url = 'https://www.google.com', theme, p
       '--omnibox-action-hover': theme.omniboxActionHover,
       '--toolbar-btn-hover': theme.toolbarBtnHover,
     }}>
+      {/* In collapsed vertical tabs on Mac, traffic lights are inside the toolbar row */}
+      {showTrafficLights && (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10,
+          paddingLeft: 7, paddingRight: 4, flexShrink: 0,
+        }}>
+          {['#FF5F57', '#FEBC2E', '#28C840'].map((color, i) => (
+            <div key={i} className="traffic-light" style={{
+              width: 14, height: 14, borderRadius: '50%',
+              background: color, cursor: 'pointer',
+            }} />
+          ))}
+        </div>
+      )}
       <ToolbarButton disabled><BackIcon color={ic} /></ToolbarButton>
       <ToolbarButton disabled style={{ marginLeft: pad }}><ForwardIcon color={ic} /></ToolbarButton>
       <ToolbarButton style={{ marginLeft: pad }}><ReloadIcon color={ic} /></ToolbarButton>
