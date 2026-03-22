@@ -132,7 +132,11 @@ export default function ChromeWindow({
             collapsed onToggleCollapse={onToggleVerticalCollapse}
             toolbarHeight={0}
           />
-          <div style={{ flex: 1, display: 'flex', overflow: 'hidden', background: theme.toolbar }}>
+          {/* CustomFloatingCorner: rounded leading edges */}
+          <div style={{
+            flex: 1, display: 'flex', overflow: 'hidden', background: theme.toolbar,
+            borderTopLeftRadius: 8, borderBottomLeftRadius: 8,
+          }}>
             <div style={{
               flex: 1, background: '#FFFFFF', overflow: 'auto',
               borderTop: `1px solid ${theme.separator}`,

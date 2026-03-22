@@ -87,24 +87,31 @@ function StripButton({ size, onClick, children, style }) {
 }
 
 // TabStripComboButton: start_button_ (tab groups) + end_button_ (tab search)
-// Horizontal when expanded with shared bg and flat inner edges.
-// Vertical when collapsed, each button has its own bg.
+// Each sub-button paints its OWN background (OnPaintBackground) using
+// kColorNewTabButtonCRBackgroundFrameActive = theme.headerContainerBg
+// Corner radii from tab_strip_flat_edge_button.cc:
+//   kFlatRadius = 2.0f (inner edge), kRoundedRadius = 10.0f (outer edge)
+// BoxLayout with kVerticalTabStripFlatEdgeButtonPadding (2) between_child_spacing
 function ComboButton({ theme, collapsed }) {
   const ic = theme.toolbarIcon;
   const bg = theme.headerContainerBg;
+  // tab_strip_flat_edge_button.cc constants
+  const FLAT_R = 2;
+  const ROUND_R = 10;
 
   if (collapsed) {
+    // Vertical: each button fully rounded (10px), stacked with gap
     return (
       <>
         <div className="vertical-strip-btn" style={{
-          width: BTN, height: BTN, borderRadius: R,
+          width: BTN, height: BTN, borderRadius: ROUND_R,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', background: bg,
         }}>
           <TabGroupsIcon color={ic} />
         </div>
         <div className="vertical-strip-btn" style={{
-          width: BTN, height: BTN, borderRadius: R,
+          width: BTN, height: BTN, borderRadius: ROUND_R,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', background: bg,
         }}>
@@ -114,25 +121,28 @@ function ComboButton({ theme, collapsed }) {
     );
   }
 
-  // Expanded: horizontal BoxLayout with kVerticalTabStripFlatEdgeButtonPadding (2px) gap
+  // Expanded: horizontal, each button paints own bg with flat inner edges
+  // start_button: rounded left, flat right
+  // end_button: flat left, rounded right
   return (
     <div style={{
       display: 'flex',
       gap: FLAT_PAD, // kVerticalTabStripFlatEdgeButtonPadding = 2
-      borderRadius: R, overflow: 'hidden',
-      background: bg, flexShrink: 0,
+      flexShrink: 0,
     }}>
       <div className="vertical-strip-btn" style={{
         width: BTN, height: BTN,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        cursor: 'pointer', borderRadius: 0,
+        cursor: 'pointer', background: bg,
+        borderRadius: `${ROUND_R}px ${FLAT_R}px ${FLAT_R}px ${ROUND_R}px`,
       }}>
         <TabGroupsIcon color={ic} />
       </div>
       <div className="vertical-strip-btn" style={{
         width: BTN, height: BTN,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        cursor: 'pointer', borderRadius: 0,
+        cursor: 'pointer', background: bg,
+        borderRadius: `${FLAT_R}px ${ROUND_R}px ${ROUND_R}px ${FLAT_R}px`,
       }}>
         <TabSearchIcon color={ic} />
       </div>
@@ -183,12 +193,8 @@ export default function ChromeVerticalTabStrip({
           flexShrink: 0,
         }}>
           {isMac && <MacTrafficLights />}
-          <StripButton size={BTN} onClick={onToggleCollapse}
-            style={{
-              // collapse_button_.x = caption_button_width_ (after traffic lights)
-              // spacing from previous = kVerticalTabStripTopButtonPadding = 4
-              marginLeft: dims.verticalTabStripTopButtonPadding,
-            }}>
+          {/* collapse_button_.x = caption_button_width_ (right after traffic lights) */}
+          <StripButton size={BTN} onClick={onToggleCollapse}>
             <MenuCloseIcon color={ic} />
           </StripButton>
           <div style={{ flex: 1 }} />
