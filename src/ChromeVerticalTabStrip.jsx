@@ -1,14 +1,30 @@
 import { dims } from './chrome-tokens';
 import ChromeVerticalTab from './ChromeVerticalTab';
 
-const ICON = dims.verticalTabStripButtonIconSize;      // 20
-const BTN = dims.verticalTabStripTopContainerBtnSize;   // 28
+// layout_constants.cc exact values
+const ICON = dims.verticalTabStripButtonIconSize;       // 20
+const BTN = dims.verticalTabStripTopContainerBtnSize;    // 28
 const NEW_TAB_BTN = dims.verticalTabStripNewTabButtonSize; // 32
-const R = dims.verticalTabCornerRadius;                 // 8
+const R = dims.verticalTabCornerRadius;                  // 8
 const FLAT_PAD = dims.verticalTabStripFlatEdgeButtonPad; // 2
+const TOP_BTN_PAD = dims.verticalTabStripTopButtonPadding; // 4
+const COLLAPSED_PAD = dims.verticalTabStripCollapsedPadding; // 8
+const UNCOLLAPSED_PAD = dims.verticalTabStripUncollapsedPadding; // 12
+const REGION_V_PAD = dims.verticalTabStripRegionVerticalPad; // 5
+const COLLAPSED_WIDTH = dims.verticalTabStripCollapsedWidth; // 48
+const COLLAPSED_SEP_W = dims.verticalTabStripCollapsedSepWidth; // 24
+const TAB_V_PAD = 2; // kTabVerticalPadding from vertical_unpinned_tab_container_view.cc
 
-// views::kMenuCloseIcon (CANVAS 24, scaled to 20)
-// Three lines with left-pointing arrow. Used when strip is expanded (click to collapse).
+// tab_strip_flat_edge_button.cc
+const FLAT_R = 2;   // kFlatRadius
+const ROUND_R = 10;  // kRoundedRadius
+
+// Toolbar height = toolbarButtonHeight(34) + toolbarInteriorMarginV(6) * 2 = 46
+const TOOLBAR_H = dims.toolbarButtonHeight + dims.toolbarInteriorMarginV * 2;
+
+// ── Icons from Chromium source ──
+
+// views::kMenuCloseIcon (CANVAS 24) — collapse button (expanded state)
 function MenuCloseIcon({ color }) {
   return (
     <svg width={ICON} height={ICON} viewBox="0 0 24 24" fill={color}>
@@ -17,8 +33,7 @@ function MenuCloseIcon({ color }) {
   );
 }
 
-// views::kMenuOpenIcon (CANVAS 24, scaled to 20)
-// Three lines with right-pointing arrow. Used when strip is collapsed (click to expand).
+// views::kMenuOpenIcon (CANVAS 24) — expand button (collapsed state)
 function MenuOpenIcon({ color }) {
   return (
     <svg width={ICON} height={ICON} viewBox="0 0 24 24" fill={color}>
@@ -28,7 +43,6 @@ function MenuOpenIcon({ color }) {
 }
 
 // kSavedTabGroupBarEverythingIcon (CANVAS 20)
-// 2x2 grid of outlined squares
 function TabGroupsIcon({ color }) {
   return (
     <svg width={ICON} height={ICON} viewBox="0 0 20 20" fill={color}>
@@ -37,8 +51,7 @@ function TabGroupsIcon({ color }) {
   );
 }
 
-// kTabSearchTabStripIcon (CANVAS 24, scaled to 20)
-// Three lines on left + magnifier on right
+// kTabSearchTabStripIcon (CANVAS 24)
 function TabSearchIcon({ color }) {
   return (
     <svg width={ICON} height={ICON} viewBox="0 0 24 24" fill={color}>
@@ -56,7 +69,7 @@ function NewTabIcon({ color }) {
   );
 }
 
-// macOS Tahoe traffic lights: 14px circles, 10px gap, inset 12px
+// macOS traffic lights: 14px circles, 10px gap, 12px left inset
 function MacTrafficLights() {
   const colors = ['#FF5F57', '#FEBC2E', '#28C840'];
   return (
@@ -74,78 +87,66 @@ function MacTrafficLights() {
   );
 }
 
-function StripButton({ size, onClick, children, style }) {
+// TopContainerButton: LabelButton with ConfigureInkDropForToolbar → FULLY CIRCULAR
+// Emphasis::kMaximum → borderRadius: 50%
+function CollapseButton({ size, onClick, children }) {
   return (
     <div onClick={onClick} className="vertical-strip-btn" style={{
-      width: size, height: size, borderRadius: R,
+      width: size, height: size,
+      borderRadius: '50%', // ToolbarButtonHighlightPathGenerator: Emphasis::kMaximum
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      cursor: 'pointer', flexShrink: 0, ...style,
+      cursor: 'pointer', flexShrink: 0,
     }}>
       {children}
     </div>
   );
 }
 
-// TabStripComboButton: start_button_ (tab groups) + end_button_ (tab search)
-// Each sub-button paints its OWN background (OnPaintBackground) using
-// kColorNewTabButtonCRBackgroundFrameActive = theme.headerContainerBg
-// Corner radii from tab_strip_flat_edge_button.cc:
-//   kFlatRadius = 2.0f (inner edge), kRoundedRadius = 10.0f (outer edge)
-// BoxLayout with kVerticalTabStripFlatEdgeButtonPadding (2) between_child_spacing
+// TabStripFlatEdgeButton: 28×28, paints own background, custom corner radii
+function FlatEdgeButton({ children, bg, borderRadius }) {
+  return (
+    <div className="vertical-strip-btn" style={{
+      width: BTN, height: BTN,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      cursor: 'pointer', background: bg, borderRadius,
+    }}>
+      {children}
+    </div>
+  );
+}
+
+// TabStripComboButton: start_button_ + end_button_
+// BoxLayout, between_child_spacing = kVerticalTabStripFlatEdgeButtonPadding = 2
+// Each button paints own bg via OnPaintBackground
 function ComboButton({ theme, collapsed }) {
   const ic = theme.toolbarIcon;
   const bg = theme.headerContainerBg;
-  // tab_strip_flat_edge_button.cc constants
-  const FLAT_R = 2;
-  const ROUND_R = 10;
 
   if (collapsed) {
-    // Vertical: each button fully rounded (10px), stacked with gap
+    // Vertical orientation: each button fully rounded (ROUND_R=10)
     return (
       <>
-        <div className="vertical-strip-btn" style={{
-          width: BTN, height: BTN, borderRadius: ROUND_R,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer', background: bg,
-        }}>
+        <FlatEdgeButton bg={bg} borderRadius={ROUND_R}>
           <TabGroupsIcon color={ic} />
-        </div>
-        <div className="vertical-strip-btn" style={{
-          width: BTN, height: BTN, borderRadius: ROUND_R,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer', background: bg,
-        }}>
+        </FlatEdgeButton>
+        <FlatEdgeButton bg={bg} borderRadius={ROUND_R}>
           <TabSearchIcon color={ic} />
-        </div>
+        </FlatEdgeButton>
       </>
     );
   }
 
-  // Expanded: horizontal, each button paints own bg with flat inner edges
-  // start_button: rounded left, flat right
-  // end_button: flat left, rounded right
+  // Horizontal: start=round-left/flat-right, end=flat-left/round-right
   return (
-    <div style={{
-      display: 'flex',
-      gap: FLAT_PAD, // kVerticalTabStripFlatEdgeButtonPadding = 2
-      flexShrink: 0,
-    }}>
-      <div className="vertical-strip-btn" style={{
-        width: BTN, height: BTN,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        cursor: 'pointer', background: bg,
-        borderRadius: `${ROUND_R}px ${FLAT_R}px ${FLAT_R}px ${ROUND_R}px`,
-      }}>
+    <div style={{ display: 'flex', gap: FLAT_PAD, flexShrink: 0 }}>
+      <FlatEdgeButton bg={bg}
+        borderRadius={`${ROUND_R}px ${FLAT_R}px ${FLAT_R}px ${ROUND_R}px`}>
         <TabGroupsIcon color={ic} />
-      </div>
-      <div className="vertical-strip-btn" style={{
-        width: BTN, height: BTN,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        cursor: 'pointer', background: bg,
-        borderRadius: `${FLAT_R}px ${ROUND_R}px ${ROUND_R}px ${FLAT_R}px`,
-      }}>
+      </FlatEdgeButton>
+      <FlatEdgeButton bg={bg}
+        borderRadius={`${FLAT_R}px ${ROUND_R}px ${ROUND_R}px ${FLAT_R}px`}>
         <TabSearchIcon color={ic} />
-      </div>
+      </FlatEdgeButton>
     </div>
   );
 }
@@ -158,89 +159,78 @@ export default function ChromeVerticalTabStrip({
   toolbarHeight = 0,
 }) {
   const isMac = platform === 'mac';
-  const pad = collapsed
-    ? dims.verticalTabStripCollapsedPadding     // 8
-    : dims.verticalTabStripUncollapsedPadding;  // 12
-
-  const stripWidth = collapsed
-    ? dims.verticalTabStripCollapsedWidth        // 48
-    : (width || 230);
-
+  const pad = collapsed ? COLLAPSED_PAD : UNCOLLAPSED_PAD;
+  const stripWidth = collapsed ? COLLAPSED_WIDTH : (width || 230);
   const ic = theme.toolbarIcon;
 
-  // layout_constants.cc VERTICAL_TAB_STRIP_BOTTOM_BUTTON insets: {V, H}
-  const bottomPadV = 5;
-  const bottomPadH = collapsed ? 6 : 14;
+  // vertical_tab_strip_region_view.cc: separator_padding
+  const sepPad = collapsed ? (COLLAPSED_WIDTH - COLLAPSED_SEP_W) / 2 : pad;
 
   return (
     <div style={{
       width: stripWidth,
-      display: 'flex',
-      flexDirection: 'column',
+      display: 'flex', flexDirection: 'column',
       background: theme.tabStripBg,
-      flexShrink: 0,
-      overflow: 'hidden',
+      flexShrink: 0, overflow: 'hidden',
       '--vertical-strip-btn-hover': theme.inactiveTabHover,
       '--vertical-tab-hover': theme.inactiveTabHover,
     }}>
-      {/* ── 1. Top button container (FlexSpec: kPreferred/kPreferred) ── */}
-      {/* Expanded: horizontal row [traffic lights] [collapse] ... [combo] */}
-      {/* Height matches toolbar via SetToolbarHeightForLayout */}
+
+      {/* ═══ 1. top_button_container_ ═══ */}
+      {/* Expanded: margins = VH(0, pad=12). Height = toolbar_height_ */}
       {!collapsed && (
         <div style={{
           display: 'flex', alignItems: 'center',
-          height: toolbarHeight || (dims.toolbarButtonHeight + dims.toolbarInteriorMarginV * 2),
+          height: toolbarHeight || TOOLBAR_H,
+          margin: `0 ${pad}px`, // VH(0, padding)
           flexShrink: 0,
         }}>
           {isMac && <MacTrafficLights />}
           {/* collapse_button_.x = caption_button_width_ (right after traffic lights) */}
-          <StripButton size={BTN} onClick={onToggleCollapse}>
+          <CollapseButton size={BTN} onClick={onToggleCollapse}>
             <MenuCloseIcon color={ic} />
-          </StripButton>
+          </CollapseButton>
           <div style={{ flex: 1 }} />
-          <div style={{ marginRight: pad }}>
-            <ComboButton theme={theme} collapsed={false} />
-          </div>
+          {/* combo_button: right-aligned */}
+          <ComboButton theme={theme} collapsed={false} />
         </div>
       )}
 
-      {/* Collapsed: vertical stack — sidebar starts BELOW toolbar */}
-      {/* No traffic lights here (they're in the toolbar area above) */}
+      {/* Collapsed: margins = TLBR(0, pad=8, kRegionVerticalPadding=5, pad=8) */}
       {collapsed && (
         <div style={{
           display: 'flex', flexDirection: 'column',
           alignItems: 'center',
-          paddingTop: dims.verticalTabStripRegionVerticalPad,
-          gap: dims.verticalTabStripCollapsedPadding,
+          margin: `0 ${pad}px ${REGION_V_PAD}px ${pad}px`, // TLBR(0, 8, 5, 8)
+          gap: COLLAPSED_PAD, // kVerticalTabStripCollapsedPadding = 8
           flexShrink: 0,
         }}>
-          <StripButton size={BTN} onClick={onToggleCollapse}>
+          <CollapseButton size={BTN} onClick={onToggleCollapse}>
             <MenuOpenIcon color={ic} />
-          </StripButton>
+          </CollapseButton>
           <ComboButton theme={theme} collapsed={true} />
         </div>
       )}
 
-      {/* ── 2. Separator (views::Separator) ── */}
+      {/* ═══ 2. top_button_separator_ ═══ */}
+      {/* margins = VH(0, separator_padding) */}
       <div style={{
         height: 1,
         background: theme.tabDivider,
-        marginLeft: pad, marginRight: pad,
-        marginTop: dims.verticalTabStripTopButtonPadding,
-        marginBottom: dims.verticalTabStripTopButtonPadding,
+        margin: `0 ${sepPad}px`,
         flexShrink: 0,
       }} />
 
-      {/* ── 3. Tab strip view (FlexSpec: kScaleToMinimum/kPreferred) ── */}
-      {/* Takes content height only — does NOT flex-grow */}
-      {/* kTabVerticalPadding = 2 between tabs */}
+      {/* ═══ 3. tab_strip_view_ ═══ */}
+      {/* margins = VH(kVerticalTabStripCollapsedPadding=8, 0) */}
+      {/* Tabs have their own horizontal_padding (8 collapsed, 12 uncollapsed) */}
+      {/* FlexSpec: kScaleToMinimum/kPreferred — content height only */}
       <div style={{
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        padding: `0 ${pad}px`,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2, // kTabVerticalPadding = 2
+        overflowY: 'auto', overflowX: 'hidden',
+        margin: `${COLLAPSED_PAD}px 0`, // VH(8, 0)
+        padding: `0 ${pad}px`, // horizontal_padding applied to tab container
+        display: 'flex', flexDirection: 'column',
+        gap: TAB_V_PAD, // kTabVerticalPadding = 2
         flexShrink: 0,
       }}>
         {tabs.map((tab) => (
@@ -257,13 +247,15 @@ export default function ChromeVerticalTabStrip({
         ))}
       </div>
 
-      {/* ── 4. Bottom container (FlexSpec: kPreferred/kUnbounded) ── */}
-      {/* Fills remaining space; new tab button at top of this area */}
+      {/* ═══ 4. bottom_button_container_ ═══ */}
+      {/* margins = TLBR(kVerticalTabStripCollapsedPadding=8, pad, 0, pad) */}
+      {/* Internal insets: uncollapsed VH(5,14), collapsed VH(5,6) */}
+      {/* FlexSpec: kPreferred/kUnbounded — fills remaining space */}
       <div style={{
         flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        padding: `${bottomPadV}px ${bottomPadH}px`,
+        display: 'flex', flexDirection: 'column',
+        margin: `${COLLAPSED_PAD}px ${pad}px 0 ${pad}px`, // TLBR(8, pad, 0, pad)
+        padding: collapsed ? '5px 6px' : '5px 14px', // insets VH(5,6) / VH(5,14)
       }}>
         <div
           onClick={onNewTab}
