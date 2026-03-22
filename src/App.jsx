@@ -39,6 +39,8 @@ export default function App() {
   const [variant, setVariant] = useState('tonalSpot');
   const [showSidePanel, setShowSidePanel] = useState(false);
   const [showBookmarkBar, setShowBookmarkBar] = useState(false);
+  const [verticalTabs, setVerticalTabs] = useState(false);
+  const [verticalTabsCollapsed, setVerticalTabsCollapsed] = useState(false);
 
   const theme = useMemo(
     () => createChromeTheme({ mode: themeMode, seedColor, variant, isDark }),
@@ -124,6 +126,18 @@ export default function App() {
           style={{ background: isDark ? '#333' : '#f0f0f0', color: fg, border: 'none' }}>
           {showBookmarkBar ? 'Hide Bookmarks' : 'Bookmarks Bar'}
         </button>
+
+        <button className="ctrl-btn" onClick={() => { setVerticalTabs(v => !v); setVerticalTabsCollapsed(false); }}
+          style={accent(verticalTabs)}>
+          {verticalTabs ? 'Horizontal Tabs' : 'Vertical Tabs'}
+        </button>
+
+        {verticalTabs && (
+          <button className="ctrl-btn" onClick={() => setVerticalTabsCollapsed(c => !c)}
+            style={{ background: isDark ? '#333' : '#f0f0f0', color: fg, border: 'none' }}>
+            {verticalTabsCollapsed ? 'Expand' : 'Collapse'}
+          </button>
+        )}
       </div>
 
       <ChromeWindow
@@ -135,6 +149,9 @@ export default function App() {
         onSidePanelClose={() => setShowSidePanel(false)}
         showBookmarkBar={showBookmarkBar}
         bookmarks={DEMO_BOOKMARKS}
+        verticalTabs={verticalTabs}
+        verticalTabsCollapsed={verticalTabsCollapsed}
+        onToggleVerticalCollapse={() => setVerticalTabsCollapsed(c => !c)}
         sidePanelContent={
           <div style={{ padding: 16, color: '#999', fontFamily: 'system-ui' }}>
             <div style={{ fontSize: 14, fontWeight: 500, color: '#666', marginBottom: 8 }}>

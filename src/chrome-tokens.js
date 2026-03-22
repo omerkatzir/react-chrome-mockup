@@ -78,4 +78,25 @@ export const dims = {
   bookmarkBarFaviconSize:        16,   // gfx::kFaviconSize
   bookmarkBarSeparatorThickness: 2,    // kBookmarkBarSeparatorThickness
   bookmarkBarSeparatorPadding:   8,    // kSeparatorPadding
+
+  // Vertical Tab Strip (layout_constants.cc, vertical_tab_strip_region_view.h)
+  verticalTabCornerRadius:              8,    // kVerticalTabCornerRadius
+  verticalTabHeight:                    30,   // kVerticalTabHeight
+  verticalTabPinnedHeight:              32,   // kVerticalTabPinnedHeight
+  verticalTabMinWidth:                  32,   // kVerticalTabMinWidth
+  verticalTabPinnedBorderThickness:     1,    // kVerticalTabPinnedBorderThickness
+  verticalTabStripUncollapsedPadding:   12,   // kVerticalTabStripUncollapsesPadding
+  verticalTabStripCollapsedPadding:     8,    // kVerticalTabStripCollapsedPadding
+  verticalTabStripCollapsedSepWidth:    24,   // kVerticalTabStripCollapsedSeparatorWidth
+  verticalTabStripButtonIconSize:       20,   // kVerticalTabStripButtonIconSize
+  verticalTabStripTopButtonPadding:     4,    // kVerticalTabStripTopButtonPadding
+  verticalTabStripFlatEdgeButtonPad:    2,    // kVerticalTabStripFlatEdgeButtonPadding
+  verticalTabStripTopContainerHeight:   28,   // kVerticalTabStripTopButtonContainerHeight
+  verticalTabStripNewTabButtonSize:     32,   // kVerticalTabStripNewTabButtonSize
+  verticalTabStripTopContainerBtnSize:  28,   // kVerticalTabStripTopContainerButtonSize
+  verticalTabStripUncollapsedMinWidth:  126,  // kUncollapedMinWidth
+  verticalTabStripUncollapsedMaxWidth:  400,  // kUncollapedMaxWidth
+  verticalTabStripCollapsedWidth:       48,   // kCollapsedWidth
+  verticalTabStripRegionVerticalPad:    5,    // kRegionVerticalPadding
+  verticalTabStripResizeAreaWidth:      5,    // kResizeAreaWidth
 };

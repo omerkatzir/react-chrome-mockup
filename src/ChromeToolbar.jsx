@@ -116,10 +116,42 @@ function ToolbarButton({ children, disabled, style }) {
   );
 }
 
-export default function ChromeToolbar({ url = 'https://www.google.com', theme }) {
+// Windows caption buttons — shown in toolbar when vertical tabs are active
+function WindowsCaptionButtonsToolbar({ theme }) {
+  const iconColor = theme.toolbarIcon;
+  const btnStyle = {
+    width: dims.captionButtonWidth, height: dims.captionButtonHeight,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    cursor: 'pointer', flexShrink: 0,
+  };
+
+  return (
+    <div style={{ display: 'flex', alignSelf: 'stretch', flexShrink: 0, marginRight: -dims.toolbarInteriorMarginH }}>
+      <div style={btnStyle} className="caption-btn caption-btn-minimize">
+        <svg width="10" height="1" viewBox="0 0 10 1">
+          <rect width="10" height="1" fill={iconColor} />
+        </svg>
+      </div>
+      <div style={btnStyle} className="caption-btn caption-btn-maximize">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke={iconColor} strokeWidth="1">
+          <rect x="0.5" y="0.5" width="9" height="9" />
+        </svg>
+      </div>
+      <div style={btnStyle} className="caption-btn caption-btn-close">
+        <svg width="10" height="10" viewBox="0 0 10 10" stroke={iconColor} strokeWidth="1">
+          <line x1="0" y1="0" x2="10" y2="10" />
+          <line x1="10" y1="0" x2="0" y2="10" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+export default function ChromeToolbar({ url = 'https://www.google.com', theme, platform = 'mac', verticalTabs = false }) {
   const ic = theme.toolbarIcon;
   const pad = dims.toolbarElementPadding;
   const spc = dims.toolbarStandardSpacing;
+  const isMac = platform === 'mac';
 
   return (
     <div style={{
@@ -177,6 +209,7 @@ export default function ChromeToolbar({ url = 'https://www.google.com', theme })
 
       <ToolbarButton><AvatarIcon color={ic} /></ToolbarButton>
       <ToolbarButton style={{ marginLeft: pad }}><MenuIcon color={ic} /></ToolbarButton>
+      {verticalTabs && !isMac && <WindowsCaptionButtonsToolbar theme={theme} />}
     </div>
   );
 }

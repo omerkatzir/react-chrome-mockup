@@ -87,6 +87,45 @@
   opacity: 0 !important;
 }
 
+/* Vertical tab strip buttons */
+.vertical-strip-btn {
+  position: relative;
+  overflow: hidden;
+}
+.vertical-strip-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: transparent;
+  transition: background 0.15s;
+  pointer-events: none;
+}
+.vertical-strip-btn > svg {
+  position: relative;
+  z-index: 1;
+}
+.vertical-strip-btn:hover::after {
+  background: var(--vertical-strip-btn-hover);
+}
+
+/* Vertical tab hover */
+.vertical-tab:hover {
+  background: var(--vertical-tab-hover) !important;
+}
+
+/* Vertical tab close button */
+.vertical-tab-close-btn {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.vertical-tab:hover .vertical-tab-close-btn {
+  opacity: 1;
+}
+.vertical-tab-close-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+
 /* macOS traffic lights */
 .traffic-light:hover {
   filter: brightness(0.85);
