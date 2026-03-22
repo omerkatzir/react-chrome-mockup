@@ -47,9 +47,10 @@ export default function ChromeWindow({
           toolbarHeight={TOOLBAR_HEIGHT}
         />
         {/* Main column with rounded top-left corner (CustomFloatingCorner) */}
+        {/* CustomFloatingCorner: top + bottom leading corners */}
         <div style={{
           flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0,
-          borderTopLeftRadius: 8, overflow: 'hidden',
+          borderTopLeftRadius: 8, borderBottomLeftRadius: 8, overflow: 'hidden',
         }}>
           <ChromeToolbar url={url} theme={theme} platform={platform} verticalTabs />
           {showBookmarkBar && <ChromeBookmarkBar bookmarks={bookmarks} theme={theme} />}

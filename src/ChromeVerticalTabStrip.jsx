@@ -5,6 +5,7 @@ const ICON = dims.verticalTabStripButtonIconSize;      // 20
 const BTN = dims.verticalTabStripTopContainerBtnSize;   // 28
 const NEW_TAB_BTN = dims.verticalTabStripNewTabButtonSize; // 32
 const R = dims.verticalTabCornerRadius;                 // 8
+const FLAT_PAD = dims.verticalTabStripFlatEdgeButtonPad; // 2
 
 // views::kMenuCloseIcon (CANVAS 24, scaled to 20)
 // Three lines with left-pointing arrow. Used when strip is expanded (click to collapse).
@@ -113,10 +114,12 @@ function ComboButton({ theme, collapsed }) {
     );
   }
 
-  // Expanded: horizontal, shared bg, flat inner edges
+  // Expanded: horizontal BoxLayout with kVerticalTabStripFlatEdgeButtonPadding (2px) gap
   return (
     <div style={{
-      display: 'flex', borderRadius: R, overflow: 'hidden',
+      display: 'flex',
+      gap: FLAT_PAD, // kVerticalTabStripFlatEdgeButtonPadding = 2
+      borderRadius: R, overflow: 'hidden',
       background: bg, flexShrink: 0,
     }}>
       <div className="vertical-strip-btn" style={{
@@ -181,7 +184,11 @@ export default function ChromeVerticalTabStrip({
         }}>
           {isMac && <MacTrafficLights />}
           <StripButton size={BTN} onClick={onToggleCollapse}
-            style={{ marginLeft: isMac ? dims.verticalTabStripTopButtonPadding : pad }}>
+            style={{
+              // collapse_button_.x = caption_button_width_ (after traffic lights)
+              // spacing from previous = kVerticalTabStripTopButtonPadding = 4
+              marginLeft: dims.verticalTabStripTopButtonPadding,
+            }}>
             <MenuCloseIcon color={ic} />
           </StripButton>
           <div style={{ flex: 1 }} />
@@ -220,12 +227,14 @@ export default function ChromeVerticalTabStrip({
 
       {/* ── 3. Tab strip view (FlexSpec: kScaleToMinimum/kPreferred) ── */}
       {/* Takes content height only — does NOT flex-grow */}
+      {/* kTabVerticalPadding = 2 between tabs */}
       <div style={{
         overflowY: 'auto',
         overflowX: 'hidden',
         padding: `0 ${pad}px`,
         display: 'flex',
         flexDirection: 'column',
+        gap: 2, // kTabVerticalPadding = 2
         flexShrink: 0,
       }}>
         {tabs.map((tab) => (
