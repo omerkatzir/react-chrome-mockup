@@ -248,24 +248,26 @@ export default function ChromeVerticalTabStrip({
       </div>
 
       {/* ═══ 4. bottom_button_container_ ═══ */}
-      {/* margins = TLBR(kVerticalTabStripCollapsedPadding=8, pad, 0, pad) */}
-      {/* Internal insets: uncollapsed VH(5,14), collapsed VH(5,6) */}
+      {/* region_view margins = TLBR(kVerticalTabStripCollapsedPadding=8, pad, 0, pad) */}
       {/* FlexSpec: kPreferred/kUnbounded — fills remaining space */}
+      {/* Button: 32×32 preferred, kUnbounded stretches full width in uncollapsed */}
+      {/* Button insets VH(5,14)/VH(5,6) are internal border (icon padding) */}
       <div style={{
         flex: 1,
         display: 'flex', flexDirection: 'column',
         margin: `${COLLAPSED_PAD}px ${pad}px 0 ${pad}px`, // TLBR(8, pad, 0, pad)
-        padding: collapsed ? '5px 6px' : '5px 14px', // insets VH(5,6) / VH(5,14)
       }}>
         <div
           onClick={onNewTab}
           className="vertical-strip-btn"
           style={{
-            height: NEW_TAB_BTN,
+            height: NEW_TAB_BTN, // 32px
             borderRadius: R,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer',
             background: theme.headerContainerBg,
+            // Uncollapsed: kUnbounded stretches full width
+            // Collapsed: preferred 32×32
             width: collapsed ? NEW_TAB_BTN : '100%',
             alignSelf: collapsed ? 'center' : 'stretch',
           }}
