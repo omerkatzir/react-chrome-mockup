@@ -187,8 +187,9 @@ export default function ChromeVerticalTabStrip({
         }}>
           {isMac && <MacTrafficLights />}
           {/* collapse_button_.x = caption_button_width_ (right after traffic lights) */}
+          {/* LTR expanded: (IsCollapsed()==IsRTL()) → true → kMenuOpenIcon */}
           <CollapseButton size={BTN} onClick={onToggleCollapse}>
-            <MenuCloseIcon color={ic} />
+            <MenuOpenIcon color={ic} />
           </CollapseButton>
           <div style={{ flex: 1 }} />
           {/* combo_button: right-aligned */}
@@ -205,8 +206,9 @@ export default function ChromeVerticalTabStrip({
           gap: COLLAPSED_PAD, // kVerticalTabStripCollapsedPadding = 8
           flexShrink: 0,
         }}>
+          {/* LTR collapsed: (IsCollapsed()==IsRTL()) → false → kMenuCloseIcon */}
           <CollapseButton size={BTN} onClick={onToggleCollapse}>
-            <MenuOpenIcon color={ic} />
+            <MenuCloseIcon color={ic} />
           </CollapseButton>
           <ComboButton theme={theme} collapsed={true} />
         </div>
@@ -223,12 +225,12 @@ export default function ChromeVerticalTabStrip({
 
       {/* ═══ 3. tab_strip_view_ ═══ */}
       {/* margins = VH(kVerticalTabStripCollapsedPadding=8, 0) */}
-      {/* Tabs have their own horizontal_padding (8 collapsed, 12 uncollapsed) */}
-      {/* FlexSpec: kScaleToMinimum/kPreferred — content height only */}
+      {/* NOTE: region_view uses SetCollapseMargins(true), so adjacent 8+8 → 8 */}
+      {/* In CSS flex margins don't collapse, so use only top margin here */}
       <div style={{
         overflowY: 'auto', overflowX: 'hidden',
-        margin: `${COLLAPSED_PAD}px 0`, // VH(8, 0)
-        padding: `0 ${pad}px`, // horizontal_padding applied to tab container
+        margin: `${COLLAPSED_PAD}px 0 0 0`, // top=8 only (bottom collapses with next)
+        padding: `0 ${pad}px`, // horizontal_padding from unpinned_tab_container
         display: 'flex', flexDirection: 'column',
         gap: TAB_V_PAD, // kTabVerticalPadding = 2
         flexShrink: 0,
