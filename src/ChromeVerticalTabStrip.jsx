@@ -123,20 +123,26 @@ function ComboButton({ theme, collapsed }) {
   const bg = theme.headerContainerBg;
 
   if (collapsed) {
-    // Vertical orientation: each button fully rounded (ROUND_R=10)
+    // Vertical orientation: BoxLayout kVertical, spacing=FLAT_PAD=2
+    // start_button: FlatEdge::kBottom → {10, 10, 2, 2} (round top, flat bottom)
+    // end_button: FlatEdge::kTop → {2, 2, 10, 10} (flat top, round bottom)
     return (
-      <>
-        <FlatEdgeButton bg={bg} borderRadius={ROUND_R}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: FLAT_PAD, flexShrink: 0 }}>
+        <FlatEdgeButton bg={bg}
+          borderRadius={`${ROUND_R}px ${ROUND_R}px ${FLAT_R}px ${FLAT_R}px`}>
           <TabGroupsIcon color={ic} />
         </FlatEdgeButton>
-        <FlatEdgeButton bg={bg} borderRadius={ROUND_R}>
+        <FlatEdgeButton bg={bg}
+          borderRadius={`${FLAT_R}px ${FLAT_R}px ${ROUND_R}px ${ROUND_R}px`}>
           <TabSearchIcon color={ic} />
         </FlatEdgeButton>
-      </>
+      </div>
     );
   }
 
-  // Horizontal: start=round-left/flat-right, end=flat-left/round-right
+  // Horizontal: BoxLayout kHorizontal, spacing=FLAT_PAD=2
+  // start_button: FlatEdge::kRight (LTR) → {10, 2, 2, 10}
+  // end_button: FlatEdge::kLeft (LTR) → {2, 10, 10, 2}
   return (
     <div style={{ display: 'flex', gap: FLAT_PAD, flexShrink: 0 }}>
       <FlatEdgeButton bg={bg}

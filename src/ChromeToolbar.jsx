@@ -158,7 +158,7 @@ export default function ChromeToolbar({ url = 'https://www.google.com', theme, p
       height: dims.toolbarButtonHeight + dims.toolbarInteriorMarginV * 2,
       background: theme.toolbar,
       display: 'flex', alignItems: 'center',
-      paddingLeft: dims.toolbarInteriorMarginH,
+      paddingLeft: showTrafficLights ? 0 : dims.toolbarInteriorMarginH,
       paddingRight: dims.toolbarInteriorMarginH,
       '--omnibox-action-hover': theme.omniboxActionHover,
       '--toolbar-btn-hover': theme.toolbarBtnHover,
@@ -167,7 +167,7 @@ export default function ChromeToolbar({ url = 'https://www.google.com', theme, p
       {showTrafficLights && (
         <div style={{
           display: 'flex', alignItems: 'center', gap: 10,
-          paddingLeft: 7, paddingRight: 4, flexShrink: 0,
+          paddingLeft: 12, paddingRight: 8, flexShrink: 0,
         }}>
           {['#FF5F57', '#FEBC2E', '#28C840'].map((color, i) => (
             <div key={i} className="traffic-light" style={{
