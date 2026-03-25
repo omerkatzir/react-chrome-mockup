@@ -69,17 +69,22 @@ function NewTabIcon({ color }) {
   );
 }
 
-// macOS traffic lights: 14px circles, 10px gap, 12px left inset
+// macOS traffic lights: 12px circles, 8px gap (edge-to-edge), no leading padding.
+// macOS standard: NSWindowButton radius = 6pt → diameter = 12pt = 12px @1x
+// Edge-to-edge spacing between buttons = 8pt = 8px
+// The BoxLayout inset (kVerticalTabStripUncollapsedPadding=12) on top_container_
+// already provides the 12px leading offset — no extra paddingLeft here.
 function MacTrafficLights() {
   const colors = ['#FF5F57', '#FEBC2E', '#28C840'];
   return (
     <div style={{
-      display: 'flex', alignItems: 'center', gap: 10,
-      paddingLeft: 12, flexShrink: 0,
+      display: 'flex', alignItems: 'center', gap: 8,
+      paddingRight: 8, // trailing space in caption_button_width_ after zoom button
+      flexShrink: 0,
     }}>
       {colors.map((color, i) => (
         <div key={i} className="traffic-light" style={{
-          width: 14, height: 14, borderRadius: '50%',
+          width: 12, height: 12, borderRadius: '50%',
           background: color, cursor: 'pointer', flexShrink: 0,
         }} />
       ))}
@@ -189,6 +194,7 @@ export default function ChromeVerticalTabStrip({
           display: 'flex', alignItems: 'center',
           height: toolbarHeight || TOOLBAR_H,
           margin: `0 ${pad}px`, // VH(0, padding)
+          gap: TOP_BTN_PAD, // between_child_spacing = kToolbarElementPadding = 4
           flexShrink: 0,
         }}>
           {isMac && <MacTrafficLights />}
@@ -208,7 +214,11 @@ export default function ChromeVerticalTabStrip({
         <div style={{
           display: 'flex', flexDirection: 'column',
           alignItems: 'center',
-          margin: `0 ${pad}px ${REGION_V_PAD}px ${pad}px`, // TLBR(0, 8, 5, 8)
+          // VerticalTabStripRegionView::GetInsets() in collapsed state returns
+          // TLBR(kVerticalTabStripCollapsedPadding=8, ...) as the region view's own top inset.
+          // top_button_container_ margin is TLBR(0, pad, kRegionVerticalPadding, pad).
+          // Combined: TLBR(8, 8, 5, 8)
+          margin: `${COLLAPSED_PAD}px ${pad}px ${REGION_V_PAD}px ${pad}px`,
           gap: COLLAPSED_PAD, // kVerticalTabStripCollapsedPadding = 8
           flexShrink: 0,
         }}>
