@@ -69,22 +69,21 @@ function NewTabIcon({ color }) {
   );
 }
 
-// macOS traffic lights: 12px circles, 8px gap (edge-to-edge), no leading padding.
-// macOS standard: NSWindowButton radius = 6pt → diameter = 12pt = 12px @1x
-// Edge-to-edge spacing between buttons = 8pt = 8px
-// The BoxLayout inset (kVerticalTabStripUncollapsedPadding=12) on top_container_
-// already provides the 12px leading offset — no extra paddingLeft here.
+// macOS Tahoe traffic lights: 14px circles, 10px gap (matches ChromeTabStrip.jsx).
+// No leading paddingLeft here — the BoxLayout inset (kVerticalTabStripUncollapsedPadding=12)
+// on top_container_ already provides the 12px leading offset.
+// paddingRight = trailing space in caption_button_width_ after zoom button.
 function MacTrafficLights() {
   const colors = ['#FF5F57', '#FEBC2E', '#28C840'];
   return (
     <div style={{
-      display: 'flex', alignItems: 'center', gap: 8,
+      display: 'flex', alignItems: 'center', gap: 10,
       paddingRight: 8, // trailing space in caption_button_width_ after zoom button
       flexShrink: 0,
     }}>
       {colors.map((color, i) => (
         <div key={i} className="traffic-light" style={{
-          width: 12, height: 12, borderRadius: '50%',
+          width: 14, height: 14, borderRadius: '50%',
           background: color, cursor: 'pointer', flexShrink: 0,
         }} />
       ))}
